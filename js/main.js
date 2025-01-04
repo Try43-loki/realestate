@@ -4,7 +4,7 @@ const username = document.querySelector("#username");
 const password = document.querySelector("#password");
 const loading = document.querySelector(".loading");
 btnSubmit.addEventListener("click", () => {
-  if (username.value == "Group 6" && password.value == "6666") {
+  if (username.value == "Real Estate Admin" && password.value == "We are team 6") {
     loading.innerHTML = `<dotlottie-player
       src="https://lottie.host/abb82141-80a1-44e8-a5f7-59245072b031/ZO9nXM2CDb.lottie"
       background="transparent"
