@@ -16,10 +16,17 @@ const viewAddress = document.querySelector(".viewAddress");
 const viewNumber = document.querySelector(".viewNumber");
 const viewEmail = document.querySelector(".viewEmail");
 const viewType = document.querySelector(".viewType");
-// update teh company
+// update the company
 const UpdateTitle = document.querySelector("#titleUpdate");
 const btnUpdate = document.querySelector("#btnUpdate");
+// type to count
+const goldCount = document.querySelector("#goldCount");
+const landCount = document.querySelector("#landCount");
+const financeCount = document.querySelector('#financeCount');
+const totalType = document.querySelector('#totalCount');
 
+// sort by category
+const sortByType = document.querySelector('#sortByType');
 formData.addEventListener("submit", (e) => {
   e.preventDefault();
   const company = {
@@ -48,28 +55,102 @@ formData.addEventListener("submit", (e) => {
       text: "Company has been added",
       icon: "success",
     });
-    companies.push(company);
+    if(validationForm()){
+      companies.push(company);
+    }
+    goldCountCompanies();
+    landCountCompanies();
+    financeCountCompanies();
+    countAllCompanies();
   }
-  renderCompany();
+  renderCompany(companies);
   setItemInStorage();
   clearForm();
 });
 document.addEventListener("DOMContentLoaded", () => {
   getItemInStorage();
-  renderCompany();
+  renderCompany(companies);
+  goldCountCompanies();
+  landCountCompanies();
+  financeCountCompanies();
+  countAllCompanies();
 });
-const renderCompany = () => {
-  const tbody = document.querySelector("#tbody");
-  if (!tbody) {
-    console.error("Error: The element with id 'tbody' was not found.");
-    return;
+const setItemInStorage = () => {
+  localStorage.setItem("lists", JSON.stringify(companies));
+};
+const getItemInStorage = () => {
+  const storedLists = localStorage.getItem("lists");
+  if (storedLists) {
+    companies = JSON.parse(storedLists);
+    renderCompany(companies);
   }
+};
+const clearForm = () => {
+  inputName.value = "";
+  owner.value = "";
+  email.value = "";
+  address.value = "";
+  phone.value = "";
+  currentEditIndex = null;
+};
+const btnOut = document.querySelector("#btnOut");
+btnOut.addEventListener("click", () => {
+  let timerInterval;
+  Swal.fire({
+    title: "Ready to logout!",
+    html: "it will close in <b></b> milliseconds.",
+    timer: 1500,
+    timerProgressBar: true,
+    didOpen: () => {
+      Swal.showLoading();
+      const timer = Swal.getPopup().querySelector("b");
+      timerInterval = setInterval(() => {
+        timer.textContent = `${Swal.getTimerLeft()}`;
+      }, 100);
+    },
+    willClose: () => {
+      clearInterval(timerInterval);
+    },
+  }).then((result) => {
+    /* Read more about handling dismissals below */
+    if (result.dismiss === Swal.DismissReason.timer) {
+      window.location.href = "index.html";
+    }
+  });
+});
+const goldCountCompanies =()=>{
+  let selectCompanies =  companies.filter((e)=> e.category === "Gold");
+  goldCount.innerHTML = selectCompanies.length;
+}
+const landCountCompanies = ()=>{
+  let selectCompanies =  companies.filter((e)=> e.category === "Land");
+  landCount.innerHTML = selectCompanies.length;
+}
+const financeCountCompanies = ()=>{
+  let selectCompanies =  companies.filter((e)=> e.category === "Finance");
+  financeCount.innerHTML = selectCompanies.length;
+}
+const countAllCompanies = ()=>{
+  totalType.innerHTML = companies.length;
+}
+// sort by type
+sortByType.addEventListener("change",(e)=>{
 
-  // Clear existing rows in the table body
+  const type = e.target.value;
+  const filterCompany = companies.filter((com)=>{
+    return com.category === type;
+  })
+  if( type === "ALL"){
+    renderCompany(companies)
+  }else{
+    renderCompany(filterCompany)
+  }
+  
+})
+const renderCompany = (arrayProducts) => {
+  const displayProduct = arrayProducts;
   tbody.innerHTML = "";
-
-  // Loop through the companies array to create table rows dynamically
-  companies.forEach((item, index) => {
+  displayProduct.forEach((item, index) => {
     const tr = document.createElement("tr");
     tr.innerHTML = `
           <td>${index + 1}</td>
@@ -97,11 +178,8 @@ const renderCompany = () => {
             </button>
           </td>
         `;
-
-    // Append the new row to the table body
     tbody.appendChild(tr);
 
-    // Add event listeners for buttons (optional)
     const deleteButton = tr.querySelector(".btn-delete");
     const updateButton = tr.querySelector(".btn-update");
     const viewButton = tr.querySelector(".btn-view");
@@ -125,14 +203,17 @@ const renderCompany = () => {
               icon: "success",
             });
             companies.splice(index, 1);
-            renderCompany();
+            renderCompany(companies);
             setItemInStorage();
+            goldCountCompanies();
+            landCountCompanies();
+            financeCountCompanies();
+            countAllCompanies();
           }
         });
         // Example: Remove the item from the array and re-render
       });
     }
-
     if (updateButton) {
       updateButton.addEventListener("click", () => {
         btnCloseModal.addEventListener("click", () => {
@@ -169,7 +250,6 @@ const renderCompany = () => {
           address.value = correctItem.address;
           phone.value = correctItem.phone;
           category.value = correctItem.category;
-
           // Set the currentEditIndex to the item's index
           currentEditIndex = correctIndex;
         }
@@ -177,58 +257,62 @@ const renderCompany = () => {
     }
 
     if (viewButton) {
-      viewButton.addEventListener("click", () => {
-        viewCompany.innerHTML = item.name;
-        viewOwner.innerHTML = item.owner;
-        viewAddress.innerHTML = item.address;
-        viewNumber.innerHTML = item.phone;
-        viewEmail.innerHTML = item.email;
-        viewType.innerHTML = item.category;
-      });
+      viewBtn(viewButton,item);
     }
-  });
-};
 
-const setItemInStorage = () => {
-  localStorage.setItem("lists", JSON.stringify(companies));
-};
-const getItemInStorage = () => {
-  const storedLists = localStorage.getItem("lists");
-  if (storedLists) {
-    companies = JSON.parse(storedLists);
-    renderCompany();
-  }
-};
-const clearForm = () => {
-  inputName.value = "";
-  owner.value = "";
-  email.value = "";
-  address.value = "";
-  phone.value = "";
-  currentEditIndex = null;
-};
-const btnOut = document.querySelector("#btnOut");
-btnOut.addEventListener("click", () => {
-  let timerInterval;
-  Swal.fire({
-    title: "Ready to logout!",
-    html: "it will close in <b></b> milliseconds.",
-    timer: 1500,
-    timerProgressBar: true,
-    didOpen: () => {
-      Swal.showLoading();
-      const timer = Swal.getPopup().querySelector("b");
-      timerInterval = setInterval(() => {
-        timer.textContent = `${Swal.getTimerLeft()}`;
-      }, 100);
-    },
-    willClose: () => {
-      clearInterval(timerInterval);
-    },
-  }).then((result) => {
-    /* Read more about handling dismissals below */
-    if (result.dismiss === Swal.DismissReason.timer) {
-      window.location.href = "index.html";
-    }
+  })
+    
+}
+
+const viewBtn =(btn,item)=>{
+  btn.addEventListener("click", () => {
+    viewCompany.innerHTML = item.name;
+    viewOwner.innerHTML = item.owner;
+    viewAddress.innerHTML = item.address;
+    viewNumber.innerHTML = item.phone;
+    viewEmail.innerHTML = item.email;
+    viewType.innerHTML = item.category;
   });
-});
+
+}
+// sort by name
+const sortByName = document.querySelector("#sortByName");
+sortByName.addEventListener("change",(e)=>{
+
+  const nameCompany = e.target.value;
+  if(nameCompany === 'A-Z'){
+    companies.sort((a, b) => a.name.localeCompare(b.name));
+    renderCompany(companies);
+  }else{
+    
+    companies.sort((a, b) => a.name.localeCompare(b.name));
+    renderCompany(companies.reverse());
+  }
+
+})
+// search company 
+const searchCompany = document.querySelector("#search");
+searchCompany.addEventListener("keyup",()=>{
+  const searchValue = searchCompany.value.toLowerCase();
+  const result = companies.filter((com) => com.name.toLowerCase().includes(searchValue));
+  renderCompany(result);
+})
+// Validation form
+const validationForm =()=>{
+  const nameValue = inputName.value.trim();
+  const ownerValue = owner.value.trim();
+  const emailValue = email.value.trim();
+  const addressValue = address.value.trim();
+  const phoneValue = phone.value.trim();
+  const categoryValue = category.value;
+  if(nameValue === "" || ownerValue === "" || emailValue === "" || addressValue === "" || phoneValue === "" || categoryValue === ""){
+    Swal.fire({
+      title: "Error!",
+      text: "Please fill in all fields",
+      icon: "error",
+    });
+    return false;
+  }else{
+    return true;
+  }
+}

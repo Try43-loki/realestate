@@ -69,19 +69,20 @@
 
             <!-- sort -->
 
-            <select class="form-select" id="sort">
-              <option selected>Category</option>
-              <option value="1">Gold</option>
-              <option value="2">Land</option>
-              <option value="3">Finance</option>
+            <select class="form-select" id="sortByType">
+              <option disabled selected>Category</optiond>
+              <option value="ALL">ALL</option>
+              <option value="Gold">Gold</option>
+              <option value="Land">Land</option>
+              <option value="Finance">Finance</option>
             </select>
 
             <!-- category -->
 
-            <select class="form-select" id="category">
-              <option selected>Alphabet</option>
-              <option value="1">Sort by A-Z</option>
-              <option value="2">Sort by Z-A</option>
+            <select class="form-select" id="sortByName">
+              <option disabled selected>Alphabet</option>
+              <option value="A-Z">Sort by A-Z</option>
+              <option value="Z-A">Sort by Z-A</option>
             </select>
             <!-- chart -->
             <div class="w-100 d-flex flex-column gap-2">
@@ -176,11 +177,10 @@
                       />
   
                       <select id="categorys" class="form-control">
-                        <option value="default" selected>Choice</option>
+                        <option value="default" disabled selected>Choice</option>
                         <option value="Gold">Gold</option>
                         <option value="Land">Land</option>
-                        <option value="House">House</option>
-                        <option value="Car">Car</option>
+                        <option value="Finance">Finance</option>
                       </select>
                       <div class="modal-footer d-flex justify-content-end w-100">
                         <button
@@ -213,10 +213,10 @@
                 >
                   <i class="fa-solid fa-coins mx-2"></i> Gold
                 </div>
-                <div
+                <div id="goldCount"
                   class="center first-center w-100 text-white fw-semibold fs-1 text-center d-flex justify-content-end p-3 align-items-center"
                 >
-                  100
+                  0
                 </div>
                 <div
                   class="button first w-100 rounded-bottom-2 cursor text-white fw-light fs-6 text-center d-flex justify-content-end p-3 align-items-center"
@@ -233,10 +233,10 @@
                 >
                   <i class="fa-solid fa-mountain-sun mx-2"></i>Land
                 </div>
-                <div
+                <div id="landCount"
                   class="center second-center first-center w-100 text-white fw-semibold fs-1 text-center d-flex justify-content-end p-3 align-items-center"
                 >
-                  30
+                  0
                 </div>
                 <div
                   class="button second w-100 rounded-bottom-2 cursor text-white fw-light fs-6 text-center d-flex justify-content-end p-3 align-items-center"
@@ -253,10 +253,10 @@
                 >
                   <i class="fa-solid fa-money-bill-wave mx-2"></i>Finance
                 </div>
-                <div
+                <div id="financeCount"
                   class="center third-center w-100 text-white fw-semibold fs-1 text-center d-flex justify-content-end p-3 align-items-center"
                 >
-                  80
+                  0
                 </div>
                 <div
                   class="button third w-100 rounded-bottom-2 cursor text-white fw-light fs-6 text-center d-flex justify-content-end p-3 align-items-center"
@@ -273,10 +273,10 @@
                 >
                   <i class="fa-solid fa-person mx-2"></i>All Company
                 </div>
-                <div
+                <div id="totalCount"
                   class="center fourth-center w-100 text-white fw-semibold fs-1 text-center d-flex justify-content-end p-3 align-items-center"
                 >
-                  210
+                  0
                 </div>
                 <div
                   class="button fourth w-100 rounded-bottom-2 cursor text-white fw-light fs-6 text-center d-flex justify-content-end p-3 align-items-center"
@@ -356,7 +356,8 @@
             </div>
           </div>
           <section class="mt-4 container">
-            <div class="table-responsive">
+            <h1 class="text-center opacity-80 fs-4 d-none"id=textShow >None of Company</h1>
+            <div class="table-responsive " id="tableShow">
               <table
                 class="table table-dark table-hover table-bordered rounded-md"
               >
@@ -387,6 +388,8 @@
     ></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="js/process.js"></script>
-    <script src="js/data.js"></script>
+    <script src="js/data.js">
+
+    </script>
   </body>
 </html>
