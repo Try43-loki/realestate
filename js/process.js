@@ -75,9 +75,11 @@ document.addEventListener("DOMContentLoaded", () => {
   financeCountCompanies();
   countAllCompanies();
 });
+// set data in localStorage
 const setItemInStorage = () => {
   localStorage.setItem("lists", JSON.stringify(companies));
 };
+// render data from localStorage
 const getItemInStorage = () => {
   const storedLists = localStorage.getItem("lists");
   if (storedLists) {
@@ -85,6 +87,7 @@ const getItemInStorage = () => {
     renderCompany(companies);
   }
 };
+// clear form after input
 const clearForm = () => {
   inputName.value = "";
   owner.value = "";
@@ -93,6 +96,7 @@ const clearForm = () => {
   phone.value = "";
   currentEditIndex = null;
 };
+// logout dashboard
 const btnOut = document.querySelector("#btnOut");
 btnOut.addEventListener("click", () => {
   let timerInterval;
@@ -118,18 +122,22 @@ btnOut.addEventListener("click", () => {
     }
   });
 });
+// total number of gold companies
 const goldCountCompanies =()=>{
   let selectCompanies =  companies.filter((e)=> e.category === "Gold");
   goldCount.innerHTML = selectCompanies.length;
 }
+// total number of land companies
 const landCountCompanies = ()=>{
   let selectCompanies =  companies.filter((e)=> e.category === "Land");
   landCount.innerHTML = selectCompanies.length;
 }
+// total number of finances
 const financeCountCompanies = ()=>{
   let selectCompanies =  companies.filter((e)=> e.category === "Finance");
   financeCount.innerHTML = selectCompanies.length;
 }
+// total number of companies
 const countAllCompanies = ()=>{
   totalType.innerHTML = companies.length;
 }
@@ -147,6 +155,7 @@ sortByType.addEventListener("change",(e)=>{
   }
   
 })
+// show on html page
 const renderCompany = (arrayProducts) => {
   const displayProduct = arrayProducts;
   tbody.innerHTML = "";
@@ -263,7 +272,7 @@ const renderCompany = (arrayProducts) => {
   })
     
 }
-
+// detail view of company
 const viewBtn =(btn,item)=>{
   btn.addEventListener("click", () => {
     viewCompany.innerHTML = item.name;

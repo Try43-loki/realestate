@@ -3,6 +3,7 @@ const btnSubmit = document.querySelector("#submit");
 const username = document.querySelector("#username");
 const password = document.querySelector("#password");
 const loading = document.querySelector(".loading");
+// login from
 btnSubmit.addEventListener("click", () => {
   if (username.value == "Real Estate Admin" && password.value == "We are team 6") {
     loading.innerHTML = `<dotlottie-player
@@ -31,6 +32,7 @@ btnSubmit.addEventListener("click", () => {
   password.value = "";
 });
 
+// show password
 const lockIcon = document.querySelector("#pws");
 const showPassword = () => {
   if (password.type == "password") {
@@ -43,5 +45,4 @@ const showPassword = () => {
   }
 };
 lockIcon.addEventListener("click", showPassword);
-// input data
 
